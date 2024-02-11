@@ -1,0 +1,36 @@
+data = [2.5, 63.5, 40.1, 78, 61.1;
+        0.9, 58.0, 25.1, 78, 94.1;
+        1.7, 46.0, 65.0, 78, 106.4;
+        1.2, 15.7, 102.1, 78, 173;
+        1.5, 12.2, 100, 77.1, 199.7;
+        2.0, 8.9, 87.8, 76, 176;
+        3.8, 2.7, 17.1, 69, 373.6;
+        1.0, 1.7, 140, 73, 283.7;
+        2.1, 1.0, 55.0, 79, 34.7;
+        0.8, 0.2, 50.4, 73, 36.4];
+
+countries = {'Francuska', 'Italija', 'Švicarska', 'Austrija', 'UK', 'USA', 'Rusija', 'Češka', 'Japan', 'Meksiko'};
+
+features = {'Jaka alkoholna pića', 'Vino', 'Pivo', 'Životni vijek', 'Bolesti srca'};
+
+data_std = zscore(data);
+
+[coeff, score, latent, tsquared, explained] = pca(data_std);
+
+figure;
+biplot(coeff(:,1:2), 'Scores',score(:,1:2), 'VarLabels', features);
+title('Biplot varijabli');
+
+figure;
+scatter(score(:,1), score(:,2)); % crtanje tačaka
+text(score(:,1), score(:,2), countries, 'VerticalAlignment','bottom', 'HorizontalAlignment','right'); % dodavanje etiketa
+xlabel('PC1');
+ylabel('PC2');
+title('Pozicije država');
+
+figure;
+biplot(coeff(:,1:2), 'Scores',score(:,1:2), 'VarLabels', features, 'MarkerSize',20);
+hold on;
+scatter(score(:,1), score(:,2), 'MarkerEdgeColor','k', 'MarkerFaceColor','w'); % crtanje tačaka država
+text(score(:,1), score(:,2), countries, 'VerticalAlignment','bottom', 'HorizontalAlignment','right'); % dodavanje etiketa država
+title('Kombinovani biplot');
